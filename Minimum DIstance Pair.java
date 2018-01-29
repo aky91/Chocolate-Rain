@@ -1,143 +1,145 @@
 /*
-	Created by :  aky91
-	SpaceTime  :  25th Jan 18, @MNNIT 
+Created by :  aky91
+SpaceTime  :  25th Jan 18, @MNNIT 
 
-	reference : https://www.geeksforgeeks.org/closest-pair-of-points/
+reference : https://www.geeksforgeeks.org/closest-pair-of-points/
 */
 
 import java.util.*;
 import java.lang.*;
 import java.io.*;
 import java.math.*;
- 
-class Ideone{
- 
-	public static class Point implements Comparable<Point>{
+
+public class MinDistancePair {
+
+	public static class Point implements Comparable<Point> {
+		
 		int x;
 		int y;
-		public Point(int x, int y){
+
+		public Point(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 
-		public void print(){
+		public void print() {
 			System.out.println("" + this.x + " , " + this.y);
 		}
 
-		public int compareTo(Point comparePoint){
+		public int compareTo(Point comparePoint) {
 
 			int compareX = comparePoint.x;
 
 			return this.x - compareX;
 		}
 
-		public static Comparator<Point> ComparatorX = new Comparator<Point>(){
+		public static Comparator<Point> ComparatorX = new Comparator<Point>() {
 
-		    public int compare(Point p1, Point p2) {
+			public int compare(Point p1, Point p2) {
 
-		      //ascending order
-		      return p1.x - p2.x;
-		    }
+				// ascending order
+				return p1.x - p2.x;
+			}
 		};
 
-		public static Comparator<Point> ComparatorY = new Comparator<Point>(){
+		public static Comparator<Point> ComparatorY = new Comparator<Point>() {
 
-		    public int compare(Point p1, Point p2) {
+			public int compare(Point p1, Point p2) {
 
-		      //ascending order
-		      return p1.y - p2.y;
-		    }
+				// ascending order
+				return p1.y - p2.y;
+			}
 		};
 
 	}
 
 	public static Scanner scn = new Scanner(System.in);
 
-	public static void main (String[] args) throws java.lang.Exception{
+	public static void main(String[] args) throws java.lang.Exception {
 
+		System.out.print("Enter no. of points : ");
 		int N = scn.nextInt();
 
 		Point arr[] = new Point[N];
 
-		for(int i = 0; i < N; i++){
+		for (int i = 0; i < N; i++) {
+
+			System.out.print("Enter space seperated x,y for point " + (i + 1) + " : ");
 
 			int X = scn.nextInt();
 			int Y = scn.nextInt();
 
-			arr[i] = new Point(X,Y);
+			arr[i] = new Point(X, Y);
 		}
 
-		for(Point data : arr)
+		for (Point data : arr)
 			data.print();
 
-		System.out.println("Minimum distance : " + solver(arr, 0, arr.length - 1 ));
+		Arrays.sort(arr, Point.ComparatorX);
 
- 	}
+		System.out.println("Minimum distance : " + solver(arr, 0, arr.length - 1));
 
- 	public static double solver(Point[] arr, int l, int r){
+	}
 
- 		if(l - r <= 2)
- 			return trivialSolver(arr, l, r);
+	public static double solver(Point[] arr, int l, int r) {
 
- 		int mid = l + (r - l)/2;
- 		Point midPoint = arr[mid];
+		if (l - r <= 2)
+			return trivialSolver(arr, l, r);
 
- 		double ansl = solver(arr, l, mid);
- 		double ansr = solver(arr, mid+1, r);
+		int mid = l + (r - l) / 2;
+		Point midPoint = arr[mid];
 
- 		double d = Math.min(ansl, ansr);
+		double ansl = solver(arr, l, mid);
+		double ansr = solver(arr, mid + 1, r);
 
- 		ArrayList<Point> strip = new ArrayList<>();
+		double d = Math.min(ansl, ansr);
 
- 		for(int i = l; i <= r; i++){
+		ArrayList<Point> strip = new ArrayList<>();
 
- 			if( Math.abs(arr[i].x - midPoint.x) < d)
- 				strip.add(arr[i]);
- 		}
+		for (int i = l; i <= r; i++) {
 
- 		return (double)Math.min(d, minDistStrip(strip,d));
- 	}
+			if (Math.abs(arr[i].x - midPoint.x) < d)
+				strip.add(arr[i]);
+		}
 
- 	public static double minDistStrip(ArrayList<Point> strip2, double d){
+		return (double) Math.min(d, minDistStrip(strip, d));
+	}
 
- 		Point[] strip = strip2.toArray(new Point[0]);
+	public static double minDistStrip(ArrayList<Point> strip2, double d) {
 
- 	
- 		Arrays.sort(strip, Point.ComparatorY);
+		Point[] strip = strip2.toArray(new Point[0]);
 
- 		double min = Double.MAX_VALUE;
+		Arrays.sort(strip, Point.ComparatorY);
 
- 		for(int i = 0; i < strip.length; i++)
- 			for(int j = i + 1; j < strip.length && strip[i].y - strip[j].y < min ; j++)
- 				if(distance(strip[i] , strip[j]) < min)
- 					min = distance(strip[i] , strip[j]);
+		double min = d;
 
- 		return min;
- 	}
+		for (int i = 0; i < strip.length; i++)
+			for (int j = i + 1; j < strip.length && strip[i].y - strip[j].y < min; j++)
+				if (distance(strip[i], strip[j]) < min)
+					min = distance(strip[i], strip[j]);
 
- 	public static double trivialSolver(Point[] arr, int l, int r){
+		return min;
+	}
 
- 		double min = Double.MAX_VALUE;
+	public static double trivialSolver(Point[] arr, int l, int r) {
+
+		double min = Double.MAX_VALUE;
 
 		for (int i = l; i <= r; ++i)
-			for (int j = i+1; j <= r; ++j)
+			for (int j = i + 1; j <= r; ++j)
 				if (distance(arr[i], arr[j]) < min)
 					min = distance(arr[i], arr[j]);
 		return min;
- 	}
+	}
 
- 	public static double distance(Point p1, Point p2){
+	public static double distance(Point p1, Point p2) {
 
- 		double X = Math.pow((p1.x - p2.x),2);
- 		double Y = Math.pow((p1.y - p2.y),2);
+		double X = Math.pow((p1.x - p2.x), 2);
+		double Y = Math.pow((p1.y - p2.y), 2);
 
- 		double ans = Math.sqrt(X + Y);
+		double ans = Math.sqrt(X + Y);
 
- 		return ans;
- 	}
+		return ans;
+	}
 
-}		
-
-
-
-
+}
