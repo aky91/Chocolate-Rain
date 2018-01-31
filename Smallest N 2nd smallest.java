@@ -15,11 +15,11 @@
 	find mid index
 
 	recursively get minimum form left and right halves along with all elements 
-	with all elements with which they were compared
+	with the smallest opponent
 
 	our answer is min amoung those 2 values
 
-	return answer and list of all elements of winner + other element(which we just compared)
+	return answer and minimum of current opponent and smallest opponent 
 
 
 	Complexity Analysis : 
@@ -48,17 +48,15 @@ class Ideone{
 	public static class Opair{
 
 		int value;
-		ArrayList<Integer> opponents;
+		int smallestOpponent;
 
-		public Opair(int value, ArrayList<Integer> opponents){
+		public Opair(int value, int smallestOpponent){
 
 			this.value = value;
-			this.opponents = opponents;
+			this.smallestOpponent = smallestOpponent;
 
 		}
 	}
-
-	public static int smallest = 0;
 
 	public static void main (String[] args) throws java.lang.Exception{
 
@@ -70,24 +68,19 @@ class Ideone{
  		Opair ans = orderStats(1, arr.length-1, arr);
 
  		System.out.println("Smallest = " + ans.value);
- 		
- 		int[] opponent = new int[ans.opponents.size()+1];
- 		int idx = 1;
 
- 		for(int data : ans.opponents)
- 			opponent[idx++] = data;
- 		
- 		Opair ans2 = orderStats(1, opponent.length-1, opponent);
- 		
- 		System.out.println("2nd smallest = " + ans2.value);
+ 		if(ans.smallestOpponent != Integer.MAX_VALUE)
+ 			System.out.println("2nd smallest = " + ans.smallestOpponent);
+ 		else
+ 			System.out.println("2nd smallest does not exits");
 
  	}
 
  	public static Opair orderStats(int l, int r, int[] arr){
 
-		if(r == l){
+		if(r == l){ // base case
 
-			Opair op = new Opair(arr[r] , new ArrayList<>());
+			Opair op = new Opair(arr[r] , Integer.MAX_VALUE);
 				
  			return op;
 		}
@@ -98,27 +91,34 @@ class Ideone{
 
  		Opair n2 = orderStats(mid+1,r,arr);
 
- 		Opair ans = new Opair(0,new ArrayList());
+ 		Opair ans = new Opair(0,0);
 
- 		if(n1.value < n2.value){
+ 		if(n1.value < n2.value){ // n1 wins
 
  			ans.value = n1.value;
 
- 			n1.opponents.add(n2.value);
+ 			if(n2.value < n1.smallestOpponent)
+ 				n1.smallestOpponent = n2.value;
 
- 			ans.opponents = n1.opponents;
+ 			ans.smallestOpponent = n1.smallestOpponent;
  		
- 		} else {
+ 		} else if(n2.value < n1.value){ // n2 wins
 
 			ans.value = n2.value;
 
- 			n2.opponents.add(n1.value);
+ 			if(n1.value < n2.smallestOpponent)
+ 				n2.smallestOpponent = n1.value;
 
- 			ans.opponents = n2.opponents; 			
+ 			ans.smallestOpponent = n2.smallestOpponent; 			
+ 		
+ 		} else { // when there is tie
+
+ 			ans.value = n2.value;
+
+ 			ans.smallestOpponent = Math.min(n1.smallestOpponent,n2.smallestOpponent);
  		}
 
  		return ans;
- 		
  	}
 
  	//function to create array
