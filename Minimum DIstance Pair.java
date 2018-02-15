@@ -75,6 +75,7 @@ public class MinDistancePair {
 		for (Point data : arr)
 			data.print();
 
+		//sorting with respect to x
 		Arrays.sort(arr, Point.ComparatorX);
 
 		System.out.println("Minimum distance : " + solver(arr, 0, arr.length - 1));
@@ -109,6 +110,7 @@ public class MinDistancePair {
 
 		Point[] strip = strip2.toArray(new Point[0]);
 
+		//sorting with respect to y
 		Arrays.sort(strip, Point.ComparatorY);
 
 		double min = d;
