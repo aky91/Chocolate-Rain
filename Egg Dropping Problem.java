@@ -34,8 +34,8 @@ class EggDrop{
 	    //try dropping at every floor
 	    for(int i = 1; i <= floors; i++){
 
-	    	int 
-	        min = Math.min(min, (1 + Math.max(dropEggs(N, K-i), dropEggs(N-1,K-1))));
+	    	int val = 1 + Math.max(dropEggs(eggs - 1, i - 1) , dropEggs(eggs, floors - i));
+	        min = Math.min(min, val);
 	    }
 	
 	    return min;
