@@ -13,15 +13,17 @@ class EggDrop{
 
 		EggDrop ED = new EggDrop();
 
-		int eggs = 100;
-		int floors = 2;
+		int eggs = 2;
+		int floors = 100;
+
+		HashMap<Integer, HashMap<Integer, Integer>> map = new HashMap<>();
         
-		int ans = ED.dropEggs(eggs, floors);
+		int ans = ED.dropEggs(eggs, floors, map);
 
 		System.out.println(ans);
 	}
 	
-	public static int dropEggs(int eggs, int floors){
+	public static int dropEggs(int eggs, int floors, HashMap<Integer, HashMap<Integer, Integer>> map){
 	    
 	    if(eggs == 1)
 	        return floors;
@@ -29,14 +31,22 @@ class EggDrop{
 	    if(floors == 0)
 	    	return 0;
 	        
+	    if(map.containsKey(eggs) && map.get(eggs).containsKey(floors))
+	    	return map.get(eggs).get(floors);
+
 	    int min = Integer.MAX_VALUE;
 	    
 	    //try dropping at every floor
 	    for(int i = 1; i <= floors; i++){
-
-	    	int val = 1 + Math.max(dropEggs(eggs - 1, i - 1) , dropEggs(eggs, floors - i));
+		// 1 for current drop, first call for if egg breaks, second call for if egg does not break
+	    	int val = 1 + Math.max(dropEggs(eggs - 1, i - 1, map) , dropEggs(eggs, floors - i, map));
 	        min = Math.min(min, val);
 	    }
+
+	    if(!map.containsKey(eggs))
+	    	map.put(eggs, new HashMap<>());
+
+	    map.get(eggs).put(floors, min);
 	
 	    return min;
 	}
