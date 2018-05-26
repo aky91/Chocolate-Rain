@@ -13,14 +13,19 @@ class EggDrop{
 
 		EggDrop ED = new EggDrop();
 
-		int eggs = 2;
-		int floors = 100;
+		int T = scn.nextInt();
 
-		HashMap<Integer, HashMap<Integer, Integer>> map = new HashMap<>();
-        
-		int ans = ED.dropEggs(eggs, floors, map);
+		while(T-- > 0){
 
-		System.out.println(ans);
+			int eggs = scn.nextInt();
+			int floors = scn.nextInt();
+
+			HashMap<Integer, HashMap<Integer, Integer>> map = new HashMap<>();
+	        
+			int ans = ED.dropEggs(eggs, floors, map);
+
+			System.out.println(ans);
+		}
 	}
 	
 	public static int dropEggs(int eggs, int floors, HashMap<Integer, HashMap<Integer, Integer>> map){
