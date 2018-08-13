@@ -1,2 +1,2 @@
 # Algorithms
-Java implementation of algorithm problems
+Algorithm Hall of Fame
