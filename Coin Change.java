@@ -15,10 +15,11 @@ public class CoinChange {
 
 		int[] dominations = new int[N];
 		HashMap<Integer, Integer> map = new HashMap<>();
-
-		for(int i = 0; i < N; i++)
+		int i = 0;
+		while( i < N){
 			dominations[i] = scn.nextInt();
-
+			i++;
+		}
 		int amount = scn.nextInt();
 
 		System.out.println(getMinChangeTD(amount, dominations, map));
